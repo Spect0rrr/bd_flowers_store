@@ -1,1 +1,222 @@
+import psycopg2
+import random
+import time
+from datetime import date, timedelta
 
+conn = psycopg2.connect("dbname=kursch user=postgres password=03062004tim host=localhost")
+cursor = conn.cursor()
+
+try:
+    wrapping_type = []
+    for i in range(1000):
+        id = i + 1
+        material_mas = ["Атласная","Полипропиленовая","Рафия","Тейп лента","Бечевка","Кружевная"]
+        material = "".join(random.choice(material_mas))
+        color_mas = ["Черный","Белый","Красный","Зеленый","Синий","Желтый","Пурпурный","Розовый",
+                     "Голубой","Оранжевый","Серый","Фиолетовый","Коричневый","Бирюзовый",
+                     "Лайм","Оливковый","Малиновый","Салатовый","Гранатовый","Светло-фиолетовый",
+                     "Светло-желтый","Светло-зеленый","Темно-красный","Темно-зеленый","Темно-синий",
+                     "Темно-фиолетовый","Оливково-зеленый","Темно-оранжевый","Коралловый"]
+        color = "".join(random.choice(color_mas))
+        price = random.randint(3,12) * 10 + 9
+        query = f'ISNERT INTO Wrapping_type ("wrapping_type_id", "material", "color", "price") VALUES '\
+                f'({wrapping_type["id"]}, \'{wrapping_type["material"]}\', \'{wrapping_type["color"]}\', '\
+                f' {wrapping_type["price"]} )'
+        cursor.execute(query)
+        conn.commit()
+    
+    packaging_for_flowers = []
+    for i in range(1000):
+        id = i + 1
+        material_mas = ["Бумага","Креп","Лен","Органза","Пленка","Сетка","Фетр","Фоамиран",
+                        "Фольга декоративная"]
+        material = "".join(random.choice(material_mas))
+        color_mas = ["Черный","Белый","Красный","Зеленый","Синий","Желтый","Пурпурный","Розовый",
+                     "Голубой","Оранжевый","Серый","Фиолетовый","Коричневый","Бирюзовый",
+                     "Лайм","Оливковый","Малиновый","Салатовый","Гранатовый","Светло-фиолетовый",
+                     "Светло-желтый","Светло-зеленый","Темно-красный","Темно-зеленый","Темно-синий",
+                     "Темно-фиолетовый","Оливково-зеленый","Темно-оранжевый","Коралловый"]
+        color = "".join(random.choice(color_mas))
+        price = random.randint(5,15) * 10 + 9
+        query = f'INSERT INTO Packaging_for_flowers("packaging_for_flowers_id", "material", "color", '\
+        f' "price") VALUES ({packaging_for_flowers["id"]}, \'{packaging_for_flowers["material"]}\', '\
+        f' \'{packaging_for_flowers["color"]}\', {packaging_for_flowers[price]})'
+        cursor.execute(query)
+        conn.commit()
+    
+    external_design = []
+    for i in range(1000):
+        id = i + 1
+        packaging_for_flowers = random.randint(1,1000)
+        wrapping_type = random.randint(1,1000)
+        query = f'INSERT INTO External_design("external_design_id", "packaging_for_flowers", "wrapping_type) '\
+        f' VALUES ({external_design["id"]}, {external_design["packaging_for_flowers"]}, '\
+        f' {external_design["wrapping_type"]} )'
+        cursor.execute(query)
+        conn.commit()
+    
+    bouquet_of_flowers = []
+    i = 0
+    while i < len(name_of_the_bouquet_mas):
+        id = i + 1
+        name_of_the_bouquet_mas = ["Розовый романс", "Летнее солнце", "Нежное облако", "Лавандовое настроение",
+            "Морское приключение", "Весеннее утро", "Фруктовый сад", "Пурпурная страсть", "Майский бриз",
+            "Аромат летней ночи", "Золотая осень", "Зимнее волшебство", "Весенний коктейль", "Радужные мечты",
+            "Романтический вечер", "Морозное утро", "Весеннее настроение", "Пышная розовая нежность"]
+        name_of_the_bouquet = name_of_the_bouquet_mas[i]
+        composition_of_the_bouquet_mas = ["Розы, Гипсофила, Эустома, Зелень", 
+            "Подсолнухи, Гербера, Альстромерия, Зелень", 
+            "Пионы, Льняной цвет, Эустома, Зелень",
+            "Лаванда, Розмарин, Ромашки, Зелень", 
+            "Голубые и зеленые гортензии, Эустома, Эвкалипт, Зелень",
+            "Тюльпаны, Нарциссы, Гвоздики, Зелень", 
+            "Гербера, Лимоны '('или искусственные фрукты')', Зелень",
+            "Хризантемы, Лиловые розы, Сирень, Зелень", 
+            "Фрезии, Пионы, Ранункулюсы, Зелень",
+            "Ландыши, Лиловые розы, Лаванда, Зелень", 
+            "Оранжевые гвоздики, Хризантемы, Листья эвкалипта, Зелень",
+            "Белые розы, Голубая эустома, Еловые ветки, Зелень", 
+            "Нежные тюльпаны, Фиалки, Желтые герберы, Зелень",
+            "Разноцветные герберы, Ранункулюсы, Эустома, Зелень",
+            "Красные розы, Аспидистра, Листья салала, Зелень",
+            "Белые хризантемы, Серебристые еловые ветки, Голубой эустома, Зелень",
+            "Желтые нарциссы, Фиолетовые ирисы, Белые фрезии, Зелень",
+            "Розовые пионы, Розовые розы, Розовые астромерии, Зелень"]
+        composition_of_the_bouquet = composition_of_the_bouquet_mas[i]
+        price = random.randint(15,50) * 100 + 99
+        query = f'INSERT INTO Bouquet_of_flowers("bouquet_of_flowers_id", "name_of_the_bouqquet", "composition_of_the_bouquet") '\
+        f' VALUES ({bouquet_of_flowers["id"]}, \'{bouquet_of_flowers["name_of_the_bouquet"]}\', '\
+            f' \'{bouquet_of_flowers["composition_of_the_flowers"]}\', {bouquet_of_flowers["price"]} )'
+        cursor.execute(query)
+        conn.commit()
+        i += 1
+    
+    buyer_card = []
+    for i in range(100000):
+        id = i + 1
+        for_numbers = ''.join(random.choice('0123456789') for _ in range(6))
+        number_of_card_str = "2000" + for_numbers
+        number_of_card = int(number_of_card_str)
+
+        todey = date.today()
+        start_date = date(2020, 3, 15)
+        helper = todey - start_date
+        random_date = random.randint(0, helper.days)
+        date_of_registration_int = start_date + timedelta(days=random_date)
+        date_of_registration = date_of_registration_int.strftime("%Y-%m-%d")
+
+        discount = random.randint(7, 15)
+
+        query = f'INSERT INTO Buyer_card("buyer_card_id", "number_of_card", "date_of_registration", '\
+            f' "discount") VALUES ({buyer_card["id"]}, {buyer_card["number_of_card"]}, '\
+                 f' \'{buyer_card["date_of_registration"]}\', {buyer_card["discount"]} )'
+        
+        cursor.execute(query)
+        conn.commit()
+    
+    user = []
+    for i in range(1000000):
+        id = i + 1
+
+        buyer_card = random.randint(1, 100000)
+
+        user_name_guys_mas = ["Александр","Михаил","Артем","Иван","Дмитрий","Андрей","Егор","Никита",
+                         "Сергей","Павел","Кирилл","Даниил","Антон","Максим","Владимир","Николай",
+                         "Илья","Владислав","Глеб","Евгений","Тимофей","Василий","Арсений",
+                         "Роман","Артур","Виктор","Алексей"]
+        user_name_girl_mas = ["Анна","Елена","Ольга","Татьяна","Светлана","Наталья","Ирина","Мария",
+                              "Александра","Юлия","Екатерина","Марина","Виктория","Людмила","Надежда",
+                              "Валентина","Алина","Оксана","Лариса","Евгения","Нина","Галина","Лилия"]
+        user_name = "".join(random.choice(user_name_guys_mas + user_name_girl_mas))
+
+        user_family_name_guys_mas = ["Иванов","Петров","Смирнов","Сидоров","Кузнецов","Васильев","Попов","Лебедев","Козлов",
+                                     "Новиков","Морозов","Павлов","Волков","Соловьев","Тимофеев","Федоров","Михайлов","Белов",
+                                     "Комаров","Зайцев","Голубев","Виноградов","Куликов","Лазарев","Сергеев","Романов","Богданов",
+                                     "Орлов","Макаров","Киселев"]
+        user_family_name_girl_mas = ["Иванова","Петрова","Смирнова","Сидорова","Кузнецова","Васильева","Попова","Лебедева",
+                                     "Козлова","Новикова","Морозова","Павлова","Волкова","Соловьева","Тимофеева","Федорова",
+                                     "Михайлова","Белова","Комарова","Зайцева","Голубева","Виноградова","Куликова","Лазарева",
+                                     "Сергеева","Романова","Богданова","Орлова","Макарова","Киселева"]
+        if user_name in user_name_guys_mas:
+            user_family_name = "".join(random.choice(user_family_name_guys_mas))
+        else:
+            user_family_name = "".join(random.choice(user_family_name_girl_mas))
+        
+        user_father_name_guys_mas = ["Александрович","Иванович","Михайлович","Андреевич","Дмитриевич","Сергеевич","Николаевич",
+                                     "Петрович","Владимирович","Егорович","Артемович","Кириллович","Максимович","Павлович",
+                                     "Никитич","Арсеньевич","Тимофеевич","Геннадьевич","Ярославович","Васильевич","Алексеевич",
+                                     "Антонович","Викторович","Романович","Вячеславович","Игоревич","Федорович","Евгеньевич",
+                                     "Григорьевич","Денисович"]
+        user_father_name_girl_mas = ["Александровна","Ивановна","Михайловна","Андреевна","Дмитриевна","Сергеевна","Николаевна",
+                                     "Петровна","Владимировна","Егоровна","Артемовна","Кирилловна","Максимовна","Павловна",
+                                     "Никитична","Арсеньевна","Тимофеевна","Геннадьевна","Ярославовна","Васильевна","Алексеевна",
+                                     "Антоновна","Викторовна","Романовна","Вячеславовна","Игоревна","Федоровна","Евгеньевна",
+                                     "Григорьевна","Денисовна"]
+        if user_name in user_name_guys_mas:
+            user_father_name = "".join(random.choice(user_father_name_guys_mas))
+        else:
+            user_father_name = "".join(random.choice(user_father_name_girl_mas))
+        
+        start_date = date(1960, 1, 1)
+        end_date = date(2015, 1, 1)
+        delta = end_date - start_date
+        random_delta = random.randint(0, delta.days)
+        date_of_birth_int = start_date + timedelta(days=random_delta)
+        date_of_birth = date_of_birth_int.strftime("%Y-%m-%d")  
+
+        random_nine_numbers = "".join(random.choice(list('0123456789')) for _ in range(9))
+        user_phone_number = "+79" + random_nine_numbers
+
+        city = "Москва"
+        streets_moscow = [
+            "Ленинский проспект",
+            "Профсоюзная улица",
+            "Тверская улица",
+            "Новый Арбат",
+            "Арбатская улица",
+            "Кутузовский проспект",
+            "Варшавское шоссе",
+            "Ленинградский проспект",
+            "Красная Пресня улица",
+            "Садовая-Спасская улица",
+            "Шоссе Энтузиастов",
+            "Пресненская набережная",
+            "Большая Садовая улица",
+            "Смоленская-Сенная площадь",
+            "Лубянская площадь",
+            "Арбатская площадь",
+            "Вернадского проспект",
+            "Новодевичий проезд",
+            "Каширское шоссе",
+            "Ленинградское шоссе",
+            "Большая Ордынка улица",
+            "Малая Бронная улица",
+            "Старый Арбат",
+            "Пречистенка улица",
+            "Никулинская улица",
+            "Хорошёвское шоссе",
+            "Мичуринский проспект",
+            "Тимирязевская улица",
+            "Тверская улица",
+            "Большая Дмитровка улица",
+            "Малая Грузинская улица",
+            "Щёлковское шоссе",
+            "Кутузовский проспект",
+            "Преображенская улица",
+            "Большая Ордынка улица",
+            "Авиамоторная улица",
+            "Варшавское шоссе",
+            "Ломоносовский проспект",
+            "Ленинский проспект",
+            "Щёлковское шоссе"]
+        corps = str(random.randint(1,12))
+        house = str(random.randint(1,30))
+        apartment = str(random.randint(1,400))
+
+        delivery_address = "г. " + "".join(city) + " ул. " + "".join(random.choice(streets_moscow)) + " корп. " + "".join(corps) + " д. " + "".join(house) + " кв. " + "".join(apartment)
+
+        query = f'INSERT INTO User("user_id", "buyer_card", "user_name", "user_family_name", "user_father_name", "date_of_birth", "user_phone_number", "delivery_address") '\
+            f' VALUES ({user["id"]}, {user["buyer_card"]}, \'{user["user_name"]}\', \'{user["user_family_name"]}\', \'{user["user_father_name"]}\', \'{user["date_of_birth"]}\', '\
+                f' \'{user["delivery_address"]}\' )'
+        cursor.execute(query)
+        conn.commit()
