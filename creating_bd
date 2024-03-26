@@ -1,1 +1,155 @@
+import psycopg2
 
+conn = psycopg2.connect("dbname=kursch user=postgres password=03062004tim host=localhost")
+cursor = conn.cursor()
+
+query = '''
+CREATE TABLE Flower_name (
+    flower_name_id INT NOT NULL UNIQUE,
+    flower_name VARCHAR(100),
+    PRIMARY KEY (flower_name_id)
+    );
+CREATE TABLE Things_for_caring_for_flowers (
+    things_for_caring_for_flowers_id INT NOT NULL UNIQUE,
+    tool VARCHAR(100),
+    price INT NOT NULL CHECK (price > 0),
+    PRIMARY KEY (things_for_caring_for_flowers_id)
+    );
+CREATE TABLE Stationary (
+    stationary_id INT NOT NULL UNIQUE,
+    tool VARCHAR(100),
+    price INT NOT NULL CHECK (price > 0),
+    PRIMARY KEY (stationary_id)
+    );
+CREATE TABLE Buyer_card (
+    buyer_card_id INT NOT NULL UNIQUE,
+    number_of_card INT NOT NULL,
+    date_of_registration VARCHAR(20),
+    discount INT NOT NULL,
+    PRIMARY KEY (buyer_card_id)
+    );
+CREATE TABLE Seller_in_the_store (
+    seller_in_the_store_id INT NOT NULL UNIQUE,
+    seller_name VARCHAR(60),
+    seller_family_name VARCHAR(100),
+    seller_father_name VARCHAR(100),
+    work_experience_in_the_store VARCHAR(20),
+    seller_phone_number VARCHAR(15),
+    PRIMARY KEY (seller_in_the_store_id)
+    );
+CREATE TABLE Wrapping_type (
+    wrapping_type_id INT NOT NULL UNIQUE,
+    material VARCHAR(100),
+    color VARCHAR(50),
+    price INT NOT NULL CHECK (price > 0),
+    PRIMARY KEY (wrapping_type_id)
+    );
+CREATE TABLE Packaging_for_flowers (
+    packaging_for_flowers_id INT NOT NULL UNIQUE,
+    material VARCHAR(100),
+    color VARCHAR(50),
+    price INT NOT NULL CHECK (price > 0),
+    PRIMARY KEY (packaging_for_flowers_id)
+    );
+CREATE TABLE External_design (
+    external_design_id INT NOT NULL UNIQUE,
+    packaging_for_flowers INT NOT NULL,
+    wrapping_type INT NOT NULL,
+    PRIMARY KEY (external_design_id),
+    FOREIGN KEY (packaging_for_flowers) REFERENCES Packaging_for_flowers(packaging_for_flowers_id),
+    FOREIGN KEY (wrapping_type) REFERENCES Wrapping_type(wrapping_type_id)  
+    );
+CREATE TABLE Flowers_in_storage (
+    flowers_in_storage_id INT NOT NULL UNIQUE,
+    flower_name INT NOT NULL,
+    quantity_of_flowers VARCHAR(100),
+    PRIMARY KEY (flowers_in_storage_id),
+    FOREIGN KEY (flower_name) REFERENCES Flower_name(flower_name_id)
+    );
+CREATE TABLE Storage (
+    storage_id INT NOT NULL UNIQUE,
+    flowers_in_storage INT NOT NULL,
+    storage_name VARCHAR(100),
+    country VARCHAR(100),
+    city VARCHAR(100),
+    adress VARCHAR(100),
+    warehouse_owners_phone_number VARCHAR(20),
+    PRIMARY KEY (storage_id),
+    FOREIGN KEY (flowers_in_storage) REFERENCES Flowers_in_storage(flowers_in_storage_id)
+    );
+CREATE TABLE Bouquet_of_flowers (
+    bouquet_of_flowers_id INT NOT NULL UNIQUE,
+    name_of_the_bouquet VARCHAR(100),
+    composition_of_the_bouquet VARCHAR(200),
+    price INT NOT NULL CHECK (price > 0),
+    PRIMARY KEY (bouquet_of_flowers_id)
+    );
+CREATE TABLE Provider (
+    provider_id INT NOT NULL UNIQUE,
+    storage INT NOT NULL,
+    provisers_name VARCHAR(100),
+    providers_family_name VARCHAR(100),
+    providers_father_name VARCHAR(100),
+    providers_phone_number VARCHAR(20),
+    PRIMARY KEY (provider_id),
+    FOREIGN KEY (storage) REFERENCES Storage(storage_id)
+    );
+CREATE TABLE Assortment_of_flowers_in_the_shop (
+    assortment_of_flowers_in_the_shop_id INT NOT NULL UNIQUE,
+    flower_name INT NOT NULL,
+    provider INT NOT NULL,
+    type_of_flowers VARCHAR(100),
+    flower_parameters VARCHAR(100),
+    price INT NOT NULL,
+    flower_delivery_date VARCHAR(100),
+    quantity_of_flowers_supplied INT NOT NULL,
+    photo_of_a_flower BYTEA,
+    PRIMARY KEY (assortment_of_flowers_in_the_shop_id),
+    FOREIGN KEY (flower_name) REFERENCES Flower_name(flower_name_id),
+    FOREIGN KEY (provider) REFERENCES Provider(provider_id)
+    );
+CREATE TABLE "User" (
+    user_id INT NOT NULL UNIQUE,
+    buyer_card INT NOT NULL,
+    user_name VARCHAR(100),
+    user_family_name VARCHAR(100),
+    user_father_name VARCHAR(100),
+    date_of_birth VARCHAR(20),
+    user_phone_number VARCHAR(20),
+    delivery_address VARCHAR(150),
+    PRIMARY KEY (user_id),
+    FOREIGN KEY (buyer_card) REFERENCES Buyer_card(buyer_card_id)
+    );
+CREATE TABLE Cart (
+    cart_id INT NOT NULL UNIQUE,
+    assortment_of_flowers_in_the_shop INT NOT NULL,
+    "user" INT NOT NULL,
+    bouquet_of_flowers INT NOT NULL,
+    external_design INT NOT NULL,
+    quantity_of_flowers VARCHAR(100),
+    date_of_purchase VARCHAR(20),
+    PRIMARY KEY (cart_id),
+    FOREIGN KEY (assortment_of_flowers_in_the_shop) REFERENCES Assortment_of_flowers_in_the_shop(assortment_of_flowers_in_the_shop_id),
+    FOREIGN KEY ("user") REFERENCES "User"(user_id),
+    FOREIGN KEY (bouquet_of_flowers) REFERENCES Bouquet_of_flowers(bouquet_of_flowers_id),
+    FOREIGN KEY (external_design) REFERENCES  External_design(external_design_id)
+    );
+CREATE TABLE Flower_store (
+    flower_store_id INT NOT NULL UNIQUE,
+    seller_in_the_store INT NOT NULL,
+    assortment_of_flowers_in_the_shop INT NOT NULL,
+    things_for_caring_for_flowers INT NOT NULL,
+    stationary INT NOT NULL,
+    PRIMARY KEY (flower_store_id),
+    FOREIGN KEY (seller_in_the_store) REFERENCES Seller_in_the_store(seller_in_the_store_id),
+    FOREIGN KEY (assortment_of_flowers_in_the_shop) REFERENCES Assortment_of_flowers_in_the_shop(assortment_of_flowers_in_the_shop_id),
+    FOREIGN KEY (things_for_caring_for_flowers) REFERENCES Things_for_caring_for_flowers(things_for_caring_for_flowers_id),
+    FOREIGN KEY (stationary) REFERENCES Stationary(stationary_id)
+    )
+'''
+
+cursor.execute(query)
+conn.commit()
+
+cursor.close()
+conn.close()
