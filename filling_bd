@@ -10,48 +10,62 @@ try:
     wrapping_type = []
     for i in range(1000):
         id = i + 1
+
         material_mas = ["Атласная","Полипропиленовая","Рафия","Тейп лента","Бечевка","Кружевная"]
         material = "".join(random.choice(material_mas))
+
         color_mas = ["Черный","Белый","Красный","Зеленый","Синий","Желтый","Пурпурный","Розовый",
                      "Голубой","Оранжевый","Серый","Фиолетовый","Коричневый","Бирюзовый",
                      "Лайм","Оливковый","Малиновый","Салатовый","Гранатовый","Светло-фиолетовый",
                      "Светло-желтый","Светло-зеленый","Темно-красный","Темно-зеленый","Темно-синий",
                      "Темно-фиолетовый","Оливково-зеленый","Темно-оранжевый","Коралловый"]
         color = "".join(random.choice(color_mas))
+
         price = random.randint(3,12) * 10 + 9
+
         query = f'ISNERT INTO Wrapping_type ("wrapping_type_id", "material", "color", "price") VALUES '\
                 f'({wrapping_type["id"]}, \'{wrapping_type["material"]}\', \'{wrapping_type["color"]}\', '\
                 f' {wrapping_type["price"]} )'
+        
         cursor.execute(query)
         conn.commit()
     
     packaging_for_flowers = []
     for i in range(1000):
         id = i + 1
+
         material_mas = ["Бумага","Креп","Лен","Органза","Пленка","Сетка","Фетр","Фоамиран",
                         "Фольга декоративная"]
         material = "".join(random.choice(material_mas))
+
         color_mas = ["Черный","Белый","Красный","Зеленый","Синий","Желтый","Пурпурный","Розовый",
                      "Голубой","Оранжевый","Серый","Фиолетовый","Коричневый","Бирюзовый",
                      "Лайм","Оливковый","Малиновый","Салатовый","Гранатовый","Светло-фиолетовый",
                      "Светло-желтый","Светло-зеленый","Темно-красный","Темно-зеленый","Темно-синий",
                      "Темно-фиолетовый","Оливково-зеленый","Темно-оранжевый","Коралловый"]
         color = "".join(random.choice(color_mas))
+
         price = random.randint(5,15) * 10 + 9
+
         query = f'INSERT INTO Packaging_for_flowers("packaging_for_flowers_id", "material", "color", '\
         f' "price") VALUES ({packaging_for_flowers["id"]}, \'{packaging_for_flowers["material"]}\', '\
         f' \'{packaging_for_flowers["color"]}\', {packaging_for_flowers[price]})'
+
         cursor.execute(query)
         conn.commit()
     
     external_design = []
     for i in range(1000):
         id = i + 1
+
         packaging_for_flowers = random.randint(1,1000)
+
         wrapping_type = random.randint(1,1000)
+
         query = f'INSERT INTO External_design("external_design_id", "packaging_for_flowers", "wrapping_type) '\
         f' VALUES ({external_design["id"]}, {external_design["packaging_for_flowers"]}, '\
         f' {external_design["wrapping_type"]} )'
+
         cursor.execute(query)
         conn.commit()
     
@@ -59,11 +73,13 @@ try:
     i = 0
     while i < len(name_of_the_bouquet_mas):
         id = i + 1
+
         name_of_the_bouquet_mas = ["Розовый романс", "Летнее солнце", "Нежное облако", "Лавандовое настроение",
             "Морское приключение", "Весеннее утро", "Фруктовый сад", "Пурпурная страсть", "Майский бриз",
             "Аромат летней ночи", "Золотая осень", "Зимнее волшебство", "Весенний коктейль", "Радужные мечты",
             "Романтический вечер", "Морозное утро", "Весеннее настроение", "Пышная розовая нежность"]
         name_of_the_bouquet = name_of_the_bouquet_mas[i]
+
         composition_of_the_bouquet_mas = ["Розы, Гипсофила, Эустома, Зелень", 
             "Подсолнухи, Гербера, Альстромерия, Зелень", 
             "Пионы, Льняной цвет, Эустома, Зелень",
@@ -83,12 +99,16 @@ try:
             "Желтые нарциссы, Фиолетовые ирисы, Белые фрезии, Зелень",
             "Розовые пионы, Розовые розы, Розовые астромерии, Зелень"]
         composition_of_the_bouquet = composition_of_the_bouquet_mas[i]
+
         price = random.randint(15,50) * 100 + 99
+
         query = f'INSERT INTO Bouquet_of_flowers("bouquet_of_flowers_id", "name_of_the_bouqquet", "composition_of_the_bouquet") '\
         f' VALUES ({bouquet_of_flowers["id"]}, \'{bouquet_of_flowers["name_of_the_bouquet"]}\', '\
             f' \'{bouquet_of_flowers["composition_of_the_flowers"]}\', {bouquet_of_flowers["price"]} )'
+        
         cursor.execute(query)
         conn.commit()
+
         i += 1
     
     buyer_card = []
@@ -168,49 +188,18 @@ try:
         user_phone_number = "+79" + random_nine_numbers
 
         city = "Москва"
-        streets_moscow = [
-            "Ленинский проспект",
-            "Профсоюзная улица",
-            "Тверская улица",
-            "Новый Арбат",
-            "Арбатская улица",
-            "Кутузовский проспект",
-            "Варшавское шоссе",
-            "Ленинградский проспект",
-            "Красная Пресня улица",
-            "Садовая-Спасская улица",
-            "Шоссе Энтузиастов",
-            "Пресненская набережная",
-            "Большая Садовая улица",
-            "Смоленская-Сенная площадь",
-            "Лубянская площадь",
-            "Арбатская площадь",
-            "Вернадского проспект",
-            "Новодевичий проезд",
-            "Каширское шоссе",
-            "Ленинградское шоссе",
-            "Большая Ордынка улица",
-            "Малая Бронная улица",
-            "Старый Арбат",
-            "Пречистенка улица",
-            "Никулинская улица",
-            "Хорошёвское шоссе",
-            "Мичуринский проспект",
-            "Тимирязевская улица",
-            "Тверская улица",
-            "Большая Дмитровка улица",
-            "Малая Грузинская улица",
-            "Щёлковское шоссе",
-            "Кутузовский проспект",
-            "Преображенская улица",
-            "Большая Ордынка улица",
-            "Авиамоторная улица",
-            "Варшавское шоссе",
-            "Ломоносовский проспект",
-            "Ленинский проспект",
-            "Щёлковское шоссе"]
+        streets_moscow = ["Ленинский проспект","Профсоюзная улица","Тверская улица","Новый Арбат","Арбатская улица","Кутузовский проспект",
+                          "Варшавское шоссе","Ленинградский проспект","Красная Пресня улица","Садовая-Спасская улица","Шоссе Энтузиастов",
+                          "Пресненская набережная","Большая Садовая улица","Смоленская-Сенная площадь","Лубянская площадь","Арбатская площадь",
+                          "Вернадского проспект","Новодевичий проезд","Каширское шоссе","Ленинградское шоссе","Большая Ордынка улица","Малая Бронная улица",
+                          "Старый Арбат","Пречистенка улица","Никулинская улица","Хорошёвское шоссе","Мичуринский проспект","Тимирязевская улица","Тверская улица",
+                          "Большая Дмитровка улица","Малая Грузинская улица","Щёлковское шоссе","Кутузовский проспект","Преображенская улица","Большая Ордынка улица",
+                          "Авиамоторная улица","Варшавское шоссе","Ломоносовский проспект","Ленинский проспект","Щёлковское шоссе"]
+        
         corps = str(random.randint(1,12))
+
         house = str(random.randint(1,30))
+
         apartment = str(random.randint(1,400))
 
         delivery_address = "г. " + "".join(city) + " ул. " + "".join(random.choice(streets_moscow)) + " корп. " + "".join(corps) + " д. " + "".join(house) + " кв. " + "".join(apartment)
@@ -218,5 +207,43 @@ try:
         query = f'INSERT INTO User("user_id", "buyer_card", "user_name", "user_family_name", "user_father_name", "date_of_birth", "user_phone_number", "delivery_address") '\
             f' VALUES ({user["id"]}, {user["buyer_card"]}, \'{user["user_name"]}\', \'{user["user_family_name"]}\', \'{user["user_father_name"]}\', \'{user["date_of_birth"]}\', '\
                 f' \'{user["delivery_address"]}\' )'
+        
         cursor.execute(query)
         conn.commit()
+    
+    flower_name = []
+    i = 0
+    while i < len(flower_name_mas):
+        flower_name_mas = ["Роза","Лилия","Тюльпан","Хризантема","Гвоздика","Орхидея","Пион","Астра","Маргаритка","Фиалка","Ирис","Нарцисс","Георгин",
+                           "Калла","Эустома","Крокус","Гиацинт","Лаванда","Подсолнух","Фрезия","Клематис","Амарант","Камелия","Бархатцы","Амариллис",
+                           "Мимоза","Календула","Магнолия","Аспарагус","Аммобиум","Антуриум","Агапантус","Акация","Агератум","Бегония","Бруннера",
+                           "Бальзамин","Вербена","Вероника","Гацания","Гейхера","Герань","Геум","Годеция","Гортензия","Дельфиниум","Диантус",
+                           "Доротеантус","Древо Жизни","Древо Семи Печалей","Душица","Душистый Горошек","Дыня","Жасмин","Закатник","Зверобой",
+                           "Земляника","Зиртек","Имбирь","Ирландский Мох","Калибрахоа","Калластема","Капсикум","Каркаде","Катальпа","Кислица",
+                           "Китайская Роза","Клевер","Кодонанта","Коммеллина","Конваллия","Котовник","Коттониа","Крассула","Крокосмия","Кроксон",
+                           "Купена","Купена Малая","Лаватера","Ладан","Лебеда","Лиатрис","Лофант","Любка","Мадагаскар","Майран","Мак","Маллиса",
+                           "Мальва","Маранта","Марш Маригольд","Мимулюс","Мисоп","Мителла","Мозаика"]
+        flower_name = flower_name_mas[i]
+
+        query = f'INSERT INTO Flowers_name("flower_name_id", "flower_name") VALUES ({flower_name["id"]}, \'{flower_name["flower_name"]}\')'
+
+        cursor.execute(query)
+        conn.commit()
+
+        i += 1
+    
+    flowers_in_storage = []
+    for i in range(len(flower_name_mas)):
+        id = i + 1
+
+        flower_name = random.randint(1,len(flower_name_mas))
+
+        quantity_of_flowers = str(random.randint(0,1000))
+
+        query = f'INSERT INTO Flowers_in_storage("flowers_in_storage_id", "flower_name", "quantity_of_flowers") VALUES ({flowers_in_storage["id"]}, '\
+            f' {flowers_in_storage["flower_name"]}, \'{flowers_in_storage["quantity_of_flowers"]}\')'
+        
+        cursor.execute(query)
+        conn.commit()
+    
+    
