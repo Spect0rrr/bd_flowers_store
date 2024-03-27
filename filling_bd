@@ -1,7 +1,9 @@
 import psycopg2
 import random
 import time
-from datetime import date, timedelta
+from datetime import date, timedelta, datetime
+import string
+from faker import Faker
 
 conn = psycopg2.connect("dbname=kursch user=postgres password=03062004tim host=localhost")
 cursor = conn.cursor()
@@ -238,7 +240,7 @@ try:
 
         flower_name = random.randint(1,len(flower_name_mas))
 
-        quantity_of_flowers = str(random.randint(0,1000))
+        quantity_of_flowers = str(random.randint(100,10000))
 
         query = f'INSERT INTO Flowers_in_storage("flowers_in_storage_id", "flower_name", "quantity_of_flowers") VALUES ({flowers_in_storage["id"]}, '\
             f' {flowers_in_storage["flower_name"]}, \'{flowers_in_storage["quantity_of_flowers"]}\')'
@@ -246,4 +248,123 @@ try:
         cursor.execute(query)
         conn.commit()
     
-    
+    storage = []
+    for i in range(100000):
+        id = i + 1
+
+        flowers_in_storage = random.randint(1,len(flowers_in_storage))
+
+        word_length = 8
+        random_simbols = [random.choice(string.ascii_letters + string.digits) for _ in range(word_length)]
+        storage_name = "".join(random_simbols)
+
+        country_mas = ["Россия","Финляндия","Япония"]
+        country = random.choice(country_mas)
+
+        if country in ["Россия"]:
+            fake = Faker('ru_RU')
+            city = fake.city()
+            address = fake.street_address() + ", " + fake.postcode()
+            warehouse_owners_phone_number = fake.phone_number()
+        elif country in ["Финляндия"]:
+            fake = Faker('fi_FI')
+            city = fake.city()
+            address = fake.street_address() + ", " + fake.postcode()
+            warehouse_owners_phone_number = fake.phone_number()
+        elif country in ["Япония"]:
+            fake = Faker('ja-JP')
+            city = fake.city()
+            address = fake.street_address() + ", " + fake.postcode()
+            warehouse_owners_phone_number = fake.phone_number()
+        
+        query = f'INSERT INTO Storage("storage_id", "flowers_in_storage", "storage_name", "country", "city", "address", '\
+            f' "warehouse_owners_phone_number") VALUES ({storage["id"]}, {storage["flowers_in_storage"]}, \'{storage["storage_name"]}\' '\
+                f' \'{storage["country"]}\', \'{storage["city"]}\', \'{storage["address"]}\' '\
+                     f' \'{storage["warehouse_owners_phone_number"]}\' )'
+        
+        cursor.execute(query)
+        conn.commit()
+
+        provider = []
+        for i in range(100000):
+            id = i + 1
+
+            storage = random.randint(1,len(storage))
+
+            fake = Faker('ru_RU')
+            providers_name = fake.first_name_male()
+            providers_family_name = fake.middle_name_male()
+            providers_father_name = fake.last_name_male()
+            providers_phone_number = fake.phone_number()
+
+            query = f'INSERT INTO Provider("provider_id", "storage", "providers_name", "providers_family_name" '\
+                f' "providers_father_name", "providers_phone_number") VALUES ({provider["id"]}, {provider["storage"]}, '\
+                    f' \'{provider["providers_name"]}\', \'{provider["providers_family_name"]}\', '\
+                        f' \'{provider["providers_father_name"]}\', \'{provider["providers_phone_number"]}\')'
+            
+            cursor.execute(query)
+            conn.commit()
+        
+        assortment_of_flowers_in_the_shop = []
+        for i in range(len(flower_name)):
+            id = i + 1
+
+            # flower_name = random.randint(0,len(flower_name))
+            for f in range(len(flower_name_mas)):
+                flower_name = flower_name_mas[f]
+
+            provider = random.randint(1,len(provider))
+
+            today = date.today()
+            some_days = random.randint(0,12)
+            delta = timedelta(days=some_days)
+            flower_delivery_date = str(today - delta)
+
+            quantity_of_flowers_supplied = random.randint(10,300)
+
+            price = random.randint(4,15) * 10 + 9
+
+            query = f'INSERT INTO Assortment_of_flowers_in_the_shop("assortment_of_flowers_in_the_shop_id", "flower_name", '\
+                f' "provider", "price", flower_delivery_date", "quantity_of_flowers_supplied") VALUES '\
+                    f' ({assortment_of_flowers_in_the_shop["id"]}, {assortment_of_flowers_in_the_shop["flower_name"]}, '\
+                        f' {assortment_of_flowers_in_the_shop["provider"]}, {assortment_of_flowers_in_the_shop["price"]}, '\
+                            f' \'{assortment_of_flowers_in_the_shop["flower_delivery_date"]}\', '\
+                                f' \'{assortment_of_flowers_in_the_shop["quantity_of_flowers_supplied"]})'
+            
+            cursor.execute(query)
+            conn.commit()
+        
+        cart = []
+        for i in range(1000000):
+            id = i + 1
+
+            cart_id = random.randint(1,len(user))
+
+            assortment_of_flowers_in_the_shop = random.randint(1,len(assortment_of_flowers_in_the_shop))
+
+            user = random.randint(1,len(user))
+
+            bouquet_of_flowers = random.randint(1,len(bouquet_of_flowers))
+
+            external_design = random.randint(1,len(external_design))
+
+            quantity_of_flowers = random.randint(3,100)
+
+            today = date.today()
+            count = random.randint(0,999)
+            delta = timedelta(days=count)
+            date_of_purchase = str(today - delta)
+
+            query = f'INSERT INTO Cart("cart_id", "assortment_of_flowers", "user", "bouquet_of_flowers", "external_design", '\
+                f' "quantity_of_flowers", "date_of_purchase") VALUES ({cart["id"]}, {cart["assortment_of_flowers_in_the_shop"]}, '\
+                    f' {cart["user"]}, {cart["bouquet_of_flowers"]}, {cart["external_design"]}, {cart["quantity_of_flowers"]}, '\
+                        f' \'{cart["date_of_purchase"]}\')'
+            
+            cursor.execute(query)
+            conn.commit()
+        
+        
+
+
+
+
