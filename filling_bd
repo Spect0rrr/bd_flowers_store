@@ -363,8 +363,41 @@ try:
             cursor.execute(query)
             conn.commit()
         
+        seller_in_the_store = []
+        for i in range(1000):
+            id = i + 1
+
+            fake = Faker('ru_RU')
+            seller_name = fake.first_name_male()
+
+            seller_family_name = fake.middle_name_male()
+
+            seller_father_name = fake.last_name_male()
+
+            work_experience_in_the_store = str(random.randint(1,4)) + " год(а)"
+
+            seller_phone_number = fake.phone_number()
+
+            query = f'INSERT INTO Seller_in_the_store("seller_in_the_store_id", "seller_name", "seller_family_name", '\
+                f' "seller_father_name", "work_experience_in_th_store", "seller_phone_number") VALUE ({seller_in_the_store["id"]}, '\
+                    f' \'{seller_in_the_store["seller_name"]}\', \'{seller_in_the_store["seller_family_name"]}\', '\
+                        f' \'{seller_in_the_store["seller_father_name"]}\', \'{seller_in_the_store["work_experience_in_the_store"]}\' '\
+                            f' \'{seller_in_the_store["seller_phone_number"]}\')'
+            
+            cursor.execute(query)
+            conn.commit()
         
+        things_for_caring_for_flowers = []
+        i = 0
+        while i < len(tool_mas):
+            id = i + 1
 
+            tool_mas = ["Лейки","Почва для цветов","Удобрения","Ножницы для обрезки","Таблетки от вредителей","Тряпочки и губки",
+                        "Горшки и подставки","Защита от солнца","Поддоны для сбора воды"]
+            for f in range(5):
+                some_tools = random.choice(tool_mas) + " "
+                tool = tool + some_tools
+            
+            price = random.randint(300, 1500) + 99
 
-
-
+            i += 1
