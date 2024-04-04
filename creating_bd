@@ -1,6 +1,6 @@
 import psycopg2
 
-conn = psycopg2.connect("dbname=kursch user=postgres password=03062004tim host=localhost")
+conn = psycopg2.connect("dbname=kch user=postgres password=03062004tim host=localhost")
 cursor = conn.cursor()
 
 query = '''
@@ -11,13 +11,13 @@ CREATE TABLE Flower_name (
     );
 CREATE TABLE Things_for_caring_for_flowers (
     things_for_caring_for_flowers_id INT NOT NULL UNIQUE,
-    tool VARCHAR(100),
+    tool VARCHAR(200),
     price INT NOT NULL CHECK (price > 0),
     PRIMARY KEY (things_for_caring_for_flowers_id)
     );
 CREATE TABLE Stationary (
     stationary_id INT NOT NULL UNIQUE,
-    tool VARCHAR(100),
+    tool VARCHAR(200),
     price INT NOT NULL CHECK (price > 0),
     PRIMARY KEY (stationary_id)
     );
@@ -72,7 +72,7 @@ CREATE TABLE Storage (
     storage_name VARCHAR(100),
     country VARCHAR(100),
     city VARCHAR(100),
-    adress VARCHAR(100),
+    address VARCHAR(100),
     warehouse_owners_phone_number VARCHAR(20),
     PRIMARY KEY (storage_id),
     FOREIGN KEY (flowers_in_storage) REFERENCES Flowers_in_storage(flowers_in_storage_id)
@@ -87,7 +87,7 @@ CREATE TABLE Bouquet_of_flowers (
 CREATE TABLE Provider (
     provider_id INT NOT NULL UNIQUE,
     storage INT NOT NULL,
-    provisers_name VARCHAR(100),
+    providers_name VARCHAR(100),
     providers_family_name VARCHAR(100),
     providers_father_name VARCHAR(100),
     providers_phone_number VARCHAR(20),
@@ -98,12 +98,9 @@ CREATE TABLE Assortment_of_flowers_in_the_shop (
     assortment_of_flowers_in_the_shop_id INT NOT NULL UNIQUE,
     flower_name INT NOT NULL,
     provider INT NOT NULL,
-    type_of_flowers VARCHAR(100),
-    flower_parameters VARCHAR(100),
     price INT NOT NULL,
     flower_delivery_date VARCHAR(100),
     quantity_of_flowers_supplied INT NOT NULL,
-    photo_of_a_flower BYTEA,
     PRIMARY KEY (assortment_of_flowers_in_the_shop_id),
     FOREIGN KEY (flower_name) REFERENCES Flower_name(flower_name_id),
     FOREIGN KEY (provider) REFERENCES Provider(provider_id)
