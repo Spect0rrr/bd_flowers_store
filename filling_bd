@@ -5,7 +5,7 @@ from datetime import date, timedelta, datetime
 import string
 from faker import Faker
 
-conn = psycopg2.connect("dbname=kursch user=postgres password=03062004tim host=localhost")
+conn = psycopg2.connect("dbname=kch user=postgres password=03062004tim host=localhost")
 cursor = conn.cursor()
 
 try:
@@ -25,9 +25,14 @@ try:
 
         price = random.randint(3,12) * 10 + 9
 
-        query = f'ISNERT INTO Wrapping_type ("wrapping_type_id", "material", "color", "price") VALUES '\
+        wrapping_type = {"id": id, "material": material, "color": color, "price": price}
+
+        query = f'INSERT INTO Wrapping_type ("wrapping_type_id", "material", "color", "price") VALUES '\
                 f'({wrapping_type["id"]}, \'{wrapping_type["material"]}\', \'{wrapping_type["color"]}\', '\
                 f' {wrapping_type["price"]} )'
+        
+        if (i % 100) == 0:
+            print(i)
         
         cursor.execute(query)
         conn.commit()
@@ -49,9 +54,14 @@ try:
 
         price = random.randint(5,15) * 10 + 9
 
+        packaging_for_flowers = {"id": id, "material": material, "color": color, "price": price}
+
         query = f'INSERT INTO Packaging_for_flowers("packaging_for_flowers_id", "material", "color", '\
         f' "price") VALUES ({packaging_for_flowers["id"]}, \'{packaging_for_flowers["material"]}\', '\
-        f' \'{packaging_for_flowers["color"]}\', {packaging_for_flowers[price]})'
+        f' \'{packaging_for_flowers["color"]}\', {packaging_for_flowers["price"]})'
+
+        if (i % 100) == 0:
+            print(i)
 
         cursor.execute(query)
         conn.commit()
@@ -64,15 +74,24 @@ try:
 
         wrapping_type = random.randint(1,1000)
 
-        query = f'INSERT INTO External_design("external_design_id", "packaging_for_flowers", "wrapping_type) '\
+        external_design = {"id": id, "packaging_for_flowers": packaging_for_flowers, "wrapping_type": wrapping_type}
+
+        query = f'INSERT INTO External_design("external_design_id", "packaging_for_flowers", "wrapping_type") '\
         f' VALUES ({external_design["id"]}, {external_design["packaging_for_flowers"]}, '\
         f' {external_design["wrapping_type"]} )'
+
+        if (i % 100) == 0:
+            print(i)
 
         cursor.execute(query)
         conn.commit()
     
     bouquet_of_flowers = []
     i = 0
+    name_of_the_bouquet_mas = ["Розовый романс", "Летнее солнце", "Нежное облако", "Лавандовое настроение",
+            "Морское приключение", "Весеннее утро", "Фруктовый сад", "Пурпурная страсть", "Майский бриз",
+            "Аромат летней ночи", "Золотая осень", "Зимнее волшебство", "Весенний коктейль", "Радужные мечты",
+            "Романтический вечер", "Морозное утро", "Весеннее настроение", "Пышная розовая нежность"]
     while i < len(name_of_the_bouquet_mas):
         id = i + 1
 
@@ -88,7 +107,7 @@ try:
             "Лаванда, Розмарин, Ромашки, Зелень", 
             "Голубые и зеленые гортензии, Эустома, Эвкалипт, Зелень",
             "Тюльпаны, Нарциссы, Гвоздики, Зелень", 
-            "Гербера, Лимоны '('или искусственные фрукты')', Зелень",
+            "Гербера, Лимоны, Зелень",
             "Хризантемы, Лиловые розы, Сирень, Зелень", 
             "Фрезии, Пионы, Ранункулюсы, Зелень",
             "Ландыши, Лиловые розы, Лаванда, Зелень", 
@@ -104,9 +123,15 @@ try:
 
         price = random.randint(15,50) * 100 + 99
 
-        query = f'INSERT INTO Bouquet_of_flowers("bouquet_of_flowers_id", "name_of_the_bouqquet", "composition_of_the_bouquet") '\
+        bouquet_of_flowers = {"id": id, "name_of_the_bouquet": name_of_the_bouquet, "composition_of_the_bouquet": composition_of_the_bouquet,
+                              "price": price}
+
+        query = f'INSERT INTO Bouquet_of_flowers("bouquet_of_flowers_id", "name_of_the_bouquet", "composition_of_the_bouquet", "price") '\
         f' VALUES ({bouquet_of_flowers["id"]}, \'{bouquet_of_flowers["name_of_the_bouquet"]}\', '\
-            f' \'{bouquet_of_flowers["composition_of_the_flowers"]}\', {bouquet_of_flowers["price"]} )'
+            f' \'{bouquet_of_flowers["composition_of_the_bouquet"]}\', {bouquet_of_flowers["price"]} )'
+        
+        if (i % 100) == 0:
+            print(i)
         
         cursor.execute(query)
         conn.commit()
@@ -129,9 +154,15 @@ try:
 
         discount = random.randint(7, 15)
 
+        buyer_card = {"id": id, "number_of_card": number_of_card, "date_of_registration": date_of_registration,
+                      "discount": discount}
+
         query = f'INSERT INTO Buyer_card("buyer_card_id", "number_of_card", "date_of_registration", '\
             f' "discount") VALUES ({buyer_card["id"]}, {buyer_card["number_of_card"]}, '\
                  f' \'{buyer_card["date_of_registration"]}\', {buyer_card["discount"]} )'
+        
+        if (i % 100) == 0:
+            print(i)
         
         cursor.execute(query)
         conn.commit()
@@ -206,16 +237,32 @@ try:
 
         delivery_address = "г. " + "".join(city) + " ул. " + "".join(random.choice(streets_moscow)) + " корп. " + "".join(corps) + " д. " + "".join(house) + " кв. " + "".join(apartment)
 
-        query = f'INSERT INTO User("user_id", "buyer_card", "user_name", "user_family_name", "user_father_name", "date_of_birth", "user_phone_number", "delivery_address") '\
+        user = {"id": id, "buyer_card": buyer_card, "user_name": user_name, "user_family_name": user_family_name,
+                "user_father_name": user_father_name, "date_of_birth": date_of_birth, "user_phone_number": user_phone_number, "delivery_address": delivery_address}
+
+        query = f'INSERT INTO "User"("user_id", "buyer_card", "user_name", "user_family_name", "user_father_name", "date_of_birth", "user_phone_number", "delivery_address") '\
             f' VALUES ({user["id"]}, {user["buyer_card"]}, \'{user["user_name"]}\', \'{user["user_family_name"]}\', \'{user["user_father_name"]}\', \'{user["date_of_birth"]}\', '\
-                f' \'{user["delivery_address"]}\' )'
+                f' \'{user["user_phone_number"]}\', \'{user["delivery_address"]}\' )'
+        
+        if (i % 100) == 0:
+            print(i)
         
         cursor.execute(query)
         conn.commit()
     
     flower_name = []
     i = 0
+    flower_name_mas = ["Роза","Лилия","Тюльпан","Хризантема","Гвоздика","Орхидея","Пион","Астра","Маргаритка","Фиалка","Ирис","Нарцисс","Георгин",
+                           "Калла","Эустома","Крокус","Гиацинт","Лаванда","Подсолнух","Фрезия","Клематис","Амарант","Камелия","Бархатцы","Амариллис",
+                           "Мимоза","Календула","Магнолия","Аспарагус","Аммобиум","Антуриум","Агапантус","Акация","Агератум","Бегония","Бруннера",
+                           "Бальзамин","Вербена","Вероника","Гацания","Гейхера","Герань","Геум","Годеция","Гортензия","Дельфиниум","Диантус",
+                           "Доротеантус","Древо Жизни","Древо Семи Печалей","Душица","Душистый Горошек","Дыня","Жасмин","Закатник","Зверобой",
+                           "Земляника","Зиртек","Имбирь","Ирландский Мох","Калибрахоа","Калластема","Капсикум","Каркаде","Катальпа","Кислица",
+                           "Китайская Роза","Клевер","Кодонанта","Коммеллина","Конваллия","Котовник","Коттониа","Крассула","Крокосмия","Кроксон",
+                           "Купена","Купена Малая","Лаватера","Ладан","Лебеда","Лиатрис","Лофант","Любка","Мадагаскар","Майран","Мак","Маллиса",
+                           "Мальва","Маранта","Марш Маригольд","Мимулюс","Мисоп","Мителла","Мозаика"]
     while i < len(flower_name_mas):
+        id = i + 1
         flower_name_mas = ["Роза","Лилия","Тюльпан","Хризантема","Гвоздика","Орхидея","Пион","Астра","Маргаритка","Фиалка","Ирис","Нарцисс","Георгин",
                            "Калла","Эустома","Крокус","Гиацинт","Лаванда","Подсолнух","Фрезия","Клематис","Амарант","Камелия","Бархатцы","Амариллис",
                            "Мимоза","Календула","Магнолия","Аспарагус","Аммобиум","Антуриум","Агапантус","Акация","Агератум","Бегония","Бруннера",
@@ -227,10 +274,15 @@ try:
                            "Мальва","Маранта","Марш Маригольд","Мимулюс","Мисоп","Мителла","Мозаика"]
         flower_name = flower_name_mas[i]
 
-        query = f'INSERT INTO Flowers_name("flower_name_id", "flower_name") VALUES ({flower_name["id"]}, \'{flower_name["flower_name"]}\')'
+        flower_name = {"id": id, "flower_name": flower_name}
+
+        query = f'INSERT INTO Flower_name("flower_name_id", "flower_name") VALUES ({flower_name["id"]}, \'{flower_name["flower_name"]}\')'
 
         cursor.execute(query)
         conn.commit()
+
+        if (i % 100) == 0:
+            print(i)
 
         i += 1
     
@@ -242,8 +294,13 @@ try:
 
         quantity_of_flowers = str(random.randint(100,10000))
 
+        flowers_in_storage = {"id": id, "flower_name": flower_name, "quantity_of_flowers": quantity_of_flowers}
+
         query = f'INSERT INTO Flowers_in_storage("flowers_in_storage_id", "flower_name", "quantity_of_flowers") VALUES ({flowers_in_storage["id"]}, '\
             f' {flowers_in_storage["flower_name"]}, \'{flowers_in_storage["quantity_of_flowers"]}\')'
+        
+        if (i % 100) == 0:
+            print(i)
         
         cursor.execute(query)
         conn.commit()
@@ -252,7 +309,7 @@ try:
     for i in range(100000):
         id = i + 1
 
-        flowers_in_storage = random.randint(1,len(flowers_in_storage))
+        flowers_in_storage = random.randint(1,95)
 
         word_length = 8
         random_simbols = [random.choice(string.ascii_letters + string.digits) for _ in range(word_length)]
@@ -277,127 +334,240 @@ try:
             address = fake.street_address() + ", " + fake.postcode()
             warehouse_owners_phone_number = fake.phone_number()
         
+        storage = {"id": id, "flowers_in_storage": flowers_in_storage, "storage_name": storage_name, "country": country, 
+                   "city": city, "address": address, "warehouse_owners_phone_number": warehouse_owners_phone_number}
+        
         query = f'INSERT INTO Storage("storage_id", "flowers_in_storage", "storage_name", "country", "city", "address", '\
-            f' "warehouse_owners_phone_number") VALUES ({storage["id"]}, {storage["flowers_in_storage"]}, \'{storage["storage_name"]}\' '\
-                f' \'{storage["country"]}\', \'{storage["city"]}\', \'{storage["address"]}\' '\
+            f' "warehouse_owners_phone_number") VALUES ({storage["id"]}, {storage["flowers_in_storage"]}, \'{storage["storage_name"]}\', '\
+                f' \'{storage["country"]}\', \'{storage["city"]}\', \'{storage["address"]}\', '\
                      f' \'{storage["warehouse_owners_phone_number"]}\' )'
+        
+        if (i % 100) == 0:
+            print(i)
         
         cursor.execute(query)
         conn.commit()
 
-        provider = []
-        for i in range(100000):
-            id = i + 1
+    provider = []
+    for i in range(100000):
+        id = i + 1
 
-            storage = random.randint(1,len(storage))
+        storage = random.randint(1,100000)
 
-            fake = Faker('ru_RU')
-            providers_name = fake.first_name_male()
-            providers_family_name = fake.middle_name_male()
-            providers_father_name = fake.last_name_male()
-            providers_phone_number = fake.phone_number()
+        fake = Faker('ru_RU')
+        providers_name = fake.first_name_male()
+        providers_family_name = fake.middle_name_male()
+        providers_father_name = fake.last_name_male()
+        providers_phone_number = fake.phone_number()
 
-            query = f'INSERT INTO Provider("provider_id", "storage", "providers_name", "providers_family_name" '\
+        provider = {"id": id, "storage": storage, "providers_name": providers_name, "providers_family_name": providers_family_name, 
+                        "providers_father_name": providers_father_name, "providers_phone_number": providers_phone_number}
+
+        query = f'INSERT INTO Provider("provider_id", "storage", "providers_name", "providers_family_name", '\
                 f' "providers_father_name", "providers_phone_number") VALUES ({provider["id"]}, {provider["storage"]}, '\
                     f' \'{provider["providers_name"]}\', \'{provider["providers_family_name"]}\', '\
                         f' \'{provider["providers_father_name"]}\', \'{provider["providers_phone_number"]}\')'
             
-            cursor.execute(query)
-            conn.commit()
+        if (i % 100) == 0:
+            print(i)
+            
+        cursor.execute(query)
+        conn.commit()
         
-        assortment_of_flowers_in_the_shop = []
-        for i in range(len(flower_name)):
-            id = i + 1
+    assortment_of_flowers_in_the_shop = []
+    flower_name_mas = ["Роза","Лилия","Тюльпан","Хризантема","Гвоздика","Орхидея","Пион","Астра","Маргаритка","Фиалка","Ирис","Нарцисс","Георгин",
+                           "Калла","Эустома","Крокус","Гиацинт","Лаванда","Подсолнух","Фрезия","Клематис","Амарант","Камелия","Бархатцы","Амариллис",
+                           "Мимоза","Календула","Магнолия","Аспарагус","Аммобиум","Антуриум","Агапантус","Акация","Агератум","Бегония","Бруннера",
+                           "Бальзамин","Вербена","Вероника","Гацания","Гейхера","Герань","Геум","Годеция","Гортензия","Дельфиниум","Диантус",
+                           "Доротеантус","Древо Жизни","Древо Семи Печалей","Душица","Душистый Горошек","Дыня","Жасмин","Закатник","Зверобой",
+                           "Земляника","Зиртек","Имбирь","Ирландский Мох","Калибрахоа","Калластема","Капсикум","Каркаде","Катальпа","Кислица",
+                           "Китайская Роза","Клевер","Кодонанта","Коммеллина","Конваллия","Котовник","Коттониа","Крассула","Крокосмия","Кроксон",
+                           "Купена","Купена Малая","Лаватера","Ладан","Лебеда","Лиатрис","Лофант","Любка","Мадагаскар","Майран","Мак","Маллиса",
+                           "Мальва","Маранта","Марш Маригольд","Мимулюс","Мисоп","Мителла","Мозаика"]
+    for i in range(95):
+        id = i + 1
 
-            # flower_name = random.randint(0,len(flower_name))
-            for f in range(len(flower_name_mas)):
-                flower_name = flower_name_mas[f]
+        flower_name = i + 1
 
-            provider = random.randint(1,len(provider))
+        provider = random.randint(1,100000)
 
-            today = date.today()
-            some_days = random.randint(0,12)
-            delta = timedelta(days=some_days)
-            flower_delivery_date = str(today - delta)
+        today = date.today()
+        some_days = random.randint(0,12)
+        delta = timedelta(days=some_days)
+        flower_delivery_date = str(today - delta)
 
-            quantity_of_flowers_supplied = random.randint(10,300)
+        quantity_of_flowers_supplied = random.randint(10,300)
 
-            price = random.randint(4,15) * 10 + 9
+        price = random.randint(4,15) * 10 + 9
 
-            query = f'INSERT INTO Assortment_of_flowers_in_the_shop("assortment_of_flowers_in_the_shop_id", "flower_name", '\
-                f' "provider", "price", flower_delivery_date", "quantity_of_flowers_supplied") VALUES '\
+        assortment_of_flowers_in_the_shop = {"id": id, "flower_name": flower_name, "provider": provider, "price": price,
+                                                 "flower_delivery_date": flower_delivery_date, "quantity_of_flowers_supplied": quantity_of_flowers_supplied}
+
+        query = f'INSERT INTO Assortment_of_flowers_in_the_shop("assortment_of_flowers_in_the_shop_id", "flower_name", '\
+                f' "provider", "price", "flower_delivery_date", "quantity_of_flowers_supplied") VALUES '\
                     f' ({assortment_of_flowers_in_the_shop["id"]}, {assortment_of_flowers_in_the_shop["flower_name"]}, '\
                         f' {assortment_of_flowers_in_the_shop["provider"]}, {assortment_of_flowers_in_the_shop["price"]}, '\
                             f' \'{assortment_of_flowers_in_the_shop["flower_delivery_date"]}\', '\
-                                f' \'{assortment_of_flowers_in_the_shop["quantity_of_flowers_supplied"]})'
+                                f' \'{assortment_of_flowers_in_the_shop["quantity_of_flowers_supplied"]}\')'
             
-            cursor.execute(query)
-            conn.commit()
+        if (i % 100) == 0:
+            print(i)
+            
+        cursor.execute(query)
+        conn.commit()
         
-        cart = []
-        for i in range(1000000):
-            id = i + 1
+    cart = []
+    for i in range(1000000):
+        id = i + 1
 
-            cart_id = random.randint(1,len(user))
+        cart_id = random.randint(1,1000000)
 
-            assortment_of_flowers_in_the_shop = random.randint(1,len(assortment_of_flowers_in_the_shop))
+        assortment_of_flowers_in_the_shop = random.randint(1,95)
 
-            user = random.randint(1,len(user))
+        user = random.randint(1,1000000)
 
-            bouquet_of_flowers = random.randint(1,len(bouquet_of_flowers))
+        bouquet_of_flowers = random.randint(1,18)
 
-            external_design = random.randint(1,len(external_design))
+        external_design = random.randint(1,1000)
 
-            quantity_of_flowers = random.randint(3,100)
+        quantity_of_flowers = random.randint(3,100)
 
-            today = date.today()
-            count = random.randint(0,999)
-            delta = timedelta(days=count)
-            date_of_purchase = str(today - delta)
+        today = date.today()
+        count = random.randint(0,999)
+        delta = timedelta(days=count)
+        date_of_purchase = str(today - delta)
 
-            query = f'INSERT INTO Cart("cart_id", "assortment_of_flowers", "user", "bouquet_of_flowers", "external_design", '\
+        cart = {"id": id, "assortment_of_flowers_in_the_shop": assortment_of_flowers_in_the_shop, "user": user,
+                    "bouquet_of_flowers": bouquet_of_flowers, "external_design": external_design,
+                    "quantity_of_flowers": quantity_of_flowers, "date_of_purchase": date_of_purchase}
+
+        query = f'INSERT INTO Cart("cart_id", "assortment_of_flowers_in_the_shop", "user", "bouquet_of_flowers", "external_design", '\
                 f' "quantity_of_flowers", "date_of_purchase") VALUES ({cart["id"]}, {cart["assortment_of_flowers_in_the_shop"]}, '\
                     f' {cart["user"]}, {cart["bouquet_of_flowers"]}, {cart["external_design"]}, {cart["quantity_of_flowers"]}, '\
                         f' \'{cart["date_of_purchase"]}\')'
             
-            cursor.execute(query)
-            conn.commit()
+        if (i % 100) == 0:
+            print(i)
+
+        cursor.execute(query)
+        conn.commit()
         
-        seller_in_the_store = []
-        for i in range(1000):
-            id = i + 1
+    seller_in_the_store = []
+    for i in range(1000):
+        id = i + 1
 
-            fake = Faker('ru_RU')
-            seller_name = fake.first_name_male()
+        fake = Faker('ru_RU')
+        seller_name = fake.first_name_male()
 
-            seller_family_name = fake.middle_name_male()
+        seller_family_name = fake.middle_name_male()
 
-            seller_father_name = fake.last_name_male()
+        seller_father_name = fake.last_name_male()
 
-            work_experience_in_the_store = str(random.randint(1,4)) + " год(а)"
+        work_experience_in_the_store = str(random.randint(1,4)) + " год(а)"
 
-            seller_phone_number = fake.phone_number()
+        seller_phone_number = fake.phone_number()
 
-            query = f'INSERT INTO Seller_in_the_store("seller_in_the_store_id", "seller_name", "seller_family_name", '\
-                f' "seller_father_name", "work_experience_in_th_store", "seller_phone_number") VALUE ({seller_in_the_store["id"]}, '\
+        seller_in_the_store = {"id": id, "seller_name": seller_name, "seller_family_name": seller_family_name,
+                                   "seller_father_name": seller_father_name, "work_experience_in_the_store": work_experience_in_the_store,
+                                   "seller_phone_number": seller_phone_number}
+
+        query = f'INSERT INTO Seller_in_the_store("seller_in_the_store_id", "seller_name", "seller_family_name", '\
+                f' "seller_father_name", "work_experience_in_the_store", "seller_phone_number") VALUES ({seller_in_the_store["id"]}, '\
                     f' \'{seller_in_the_store["seller_name"]}\', \'{seller_in_the_store["seller_family_name"]}\', '\
-                        f' \'{seller_in_the_store["seller_father_name"]}\', \'{seller_in_the_store["work_experience_in_the_store"]}\' '\
+                        f' \'{seller_in_the_store["seller_father_name"]}\', \'{seller_in_the_store["work_experience_in_the_store"]}\', '\
                             f' \'{seller_in_the_store["seller_phone_number"]}\')'
             
-            cursor.execute(query)
-            conn.commit()
-        
-        things_for_caring_for_flowers = []
-        i = 0
-        while i < len(tool_mas):
-            id = i + 1
-
-            tool_mas = ["Лейки","Почва для цветов","Удобрения","Ножницы для обрезки","Таблетки от вредителей","Тряпочки и губки",
-                        "Горшки и подставки","Защита от солнца","Поддоны для сбора воды"]
-            for f in range(5):
-                some_tools = random.choice(tool_mas) + " "
-                tool = tool + some_tools
+        if (i % 100) == 0:
+            print(i)
             
-            price = random.randint(300, 1500) + 99
+        cursor.execute(query)
+        conn.commit()
+        
+    things_for_caring_for_flowers = []
+    i = 0
+    tool_mas = ["Лейки","Почва для цветов","Удобрения","Ножницы для обрезки","Таблетки от вредителей","Тряпочки и губки",
+                        "Горшки и подставки","Защита от солнца","Поддоны для сбора воды"]
+    while i < (len(tool_mas) + 20):
+        id = i + 1
 
-            i += 1
+        tool_mas = ["Лейки","Почва для цветов","Удобрения","Ножницы для обрезки","Таблетки от вредителей","Тряпочки и губки",
+                        "Горшки и подставки","Защита от солнца","Поддоны для сбора воды"]
+        tool_helper = random.choice(tool_mas)
+        for f in range(4):
+            some_tools = random.choice(tool_mas)
+            tool_helper = tool_helper + ", " + some_tools
+        tool = tool_helper
+            
+        price = random.randint(300, 1500) + 99
+
+        things_for_caring_for_flowers = {"id": id, "tool": tool, "price": price}
+
+        query = f'INSERT INTO Things_for_caring_for_flowers("things_for_caring_for_flowers_id", "tool", "price") VALUES '\
+            f' ({things_for_caring_for_flowers["id"]}, \'{things_for_caring_for_flowers["tool"]}\', {things_for_caring_for_flowers["price"]})'
+
+        if (i % 100) == 0:
+            print(i)
+
+        cursor.execute(query)
+        conn.commit()
+
+        i += 1
+        
+    stationary = []
+    i = 0
+    tool_mas = ["Ручка гелевая","Карандаши","Блокнот","Тетрадь","Скрепки","Клей-карандаш","Маркеры","Линейка",
+                        "Степлер","Скотч","Ластик","Ножницы","Цветные карандаши","Папки для документов","Конверты"]
+    while i < (len(tool_mas) + 50):
+        id = i + 1
+
+        tool_mas = ["Ручка гелевая","Карандаши","Блокнот","Тетрадь","Скрепки","Клей-карандаш","Маркеры","Линейка",
+                        "Степлер","Скотч","Ластик","Ножницы","Цветные карандаши","Папки для документов","Конверты"]
+        tool_helper = random.choice(tool_mas)
+        for f in range(7):
+            some_tools = random.choice(tool_mas)
+            tool_helper = tool_helper + ", " + some_tools
+        tool = tool_helper
+            
+        price = random.randint(20,100) + 9
+
+        stationary = {"id": id, "tool": tool, "price": price}
+
+        query = f'INSERT INTO Stationary("stationary_id", "tool", "price") VALUES '\
+            f' ({stationary["id"]}, \'{stationary["tool"]}\', {stationary["price"]})'
+
+        if (i % 100) == 0:
+            print(i)
+
+        cursor.execute(query)
+        conn.commit()
+
+        i += 1
+        
+    flower_store = []
+    for i in range(1000000):
+        id = i + 1
+
+        seller_in_the_store = random.randint(1,1000)
+
+        assortment_of_flowers_in_the_shop = random.randint(1,95)
+
+        things_for_caring_for_flowers = random.randint(1,29)
+
+        stationary = random.randint(1,65)
+
+        flower_store = {"id": id, "seller_in_the_store": seller_in_the_store, "assortment_of_flowers_in_the_shop": assortment_of_flowers_in_the_shop,
+                            "things_for_caring_for_flowers": things_for_caring_for_flowers, "stationary": stationary}
+
+        query = f'INSERT INTO Flower_store("flower_store_id", "seller_in_the_store", "assortment_of_flowers_in_the_shop", '\
+                f' "things_for_caring_for_flowers", "stationary") VALUES ({flower_store["id"]}, {flower_store["seller_in_the_store"]}, '\
+                    f' {flower_store["assortment_of_flowers_in_the_shop"]}, {flower_store["things_for_caring_for_flowers"]}, {flower_store["stationary"]})'
+            
+        if (i % 100) == 0:
+            print(i)
+            
+        cursor.execute(query)
+        conn.commit()
+
+finally:
+    cursor.close()
+    conn.close()
